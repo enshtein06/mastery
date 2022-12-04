@@ -28,15 +28,15 @@ async def createUser(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
   return newUser
 
-@router.get("/{id}", response_model=schemas.UserOut)
-def getUser(id: int, db: Session = Depends(get_db)):
-  user = db.query(models.User).filter(models.User.id == id).first()
+#@router.get("/{id}", response_model=schemas.UserOut)
+#def getUser(id: int, db: Session = Depends(get_db)):
+#  user = db.query(models.User).filter(models.User.id == id).first()
 
-  if not user: 
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-      detail=f"User with id = {id} doesn't exist")
+#  if not user: 
+#    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+#      detail=f"User with id = {id} doesn't exist")
 
-  return user
+#  return user
 
 @router.put("/", response_model=schemas.Token)
 async def updateVendorCreatedUser(

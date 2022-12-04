@@ -27,6 +27,10 @@ app.include_router(auth.router)
 app.include_router(experience_block.router)
 app.include_router(user.router)
 
+@app.get("/")
+def root():
+  return {"message": "Hello world!"}
+
 @app.get("/data-policy", response_class=HTMLResponse)
 async def read_item(request: Request):
   return templates.TemplateResponse("data-policy.html", {"request": request})

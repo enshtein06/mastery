@@ -31,12 +31,12 @@ def getActivities(
 
   return newActivities
 
-@router.get("/{id}", response_model=schemas.Acitivity)
-async def getActivity(id: int, db: Session = Depends(get_db)):
-  activity = db.query(models.Activity).filter(models.Activity.id == id).first()
-  if not activity:
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{id} was not found")
-  return activity
+# @router.get("/{id}", response_model=schemas.Acitivity)
+# async def getActivity(id: int, db: Session = Depends(get_db)):
+#   activity = db.query(models.Activity).filter(models.Activity.id == id).first()
+#   if not activity:
+#     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{id} was not found")
+#   return activity
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Acitivity)
 async def createActivity(activity: schemas.CreateActivity, db: Session = Depends(get_db)):

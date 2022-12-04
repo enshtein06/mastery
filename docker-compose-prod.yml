@@ -1,0 +1,36 @@
+version: "3"
+services:
+  api:
+    image: enshtein06/masteryprod
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+      - REFRESH_TOKEN_EXPIRE_MINUTES=${REFRESH_TOKEN_EXPIRE_MINUTES}
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    expose:
+      - ${DATABASE_PORT} # Publishes 5433 to other containers but NOT to host machine
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+
+volumes:
+  postgres-db:
