@@ -24,6 +24,7 @@ services:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=${DATABASE_NAME}
     volumes:
       - postgres-db:/var/lib/postgresql/data
