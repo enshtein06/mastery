@@ -6,6 +6,8 @@ services:
       - 8000:80
     volumes:
       - ./:/usr/src/app
+    env_file:
+      - .env
     environment:
       - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
       - DATABASE_PORT=${DATABASE_PORT}
@@ -16,6 +18,13 @@ services:
       - ALGORITHM=${ALGORITHM}
       - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
       - REFRESH_TOKEN_EXPIRE_MINUTES=${REFRESH_TOKEN_EXPIRE_MINUTES}
+    networks:
+      - traefik_default
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.my_app.rule=Host(`${RAILS_HOST}`)
+      - traefik.http.services.my_app.loadbalancer.server.port=${NGINX_PORT}
+      - traefik.docker.network=traefik_default
     command: uvicorn app.main:app --host 0.0.0.0 --port 80
     depends_on:
       - postgres
@@ -26,12 +35,13 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_HOST=${DATABASE_HOSTNAME}
     volumes:
       - postgres-db:/var/lib/postgresql/data
-    expose:
-      - ${DATABASE_PORT} # Publishes 5433 to other containers but NOT to host machine
-    ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
+
+  networks:
+    traefik_default:
+      external: true
 
 volumes:
   postgres-db:
