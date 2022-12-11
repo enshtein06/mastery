@@ -18,13 +18,6 @@ services:
       - ALGORITHM=${ALGORITHM}
       - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
       - REFRESH_TOKEN_EXPIRE_MINUTES=${REFRESH_TOKEN_EXPIRE_MINUTES}
-    networks:
-      - traefik_default
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.my_app.rule=Host(`${RAILS_HOST}`)
-      - traefik.http.services.my_app.loadbalancer.server.port=${NGINX_PORT}
-      - traefik.docker.network=traefik_default
     command: uvicorn app.main:app --host 0.0.0.0 --port 80
     depends_on:
       - postgres
@@ -38,10 +31,6 @@ services:
       - POSTGRES_HOST=${DATABASE_HOSTNAME}
     volumes:
       - postgres-db:/var/lib/postgresql/data
-
-  networks:
-    traefik_default:
-      external: true
 
 volumes:
   postgres-db:
