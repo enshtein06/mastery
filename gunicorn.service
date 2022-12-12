@@ -1,14 +1,14 @@
 [Unit]
-Description=demo fastapi application
+Description=demo mastery application
 After=network.target
 
 [Service]
-User=mastery
-Group=mastery
-WorkingDirectory=/home/mastery/app/src/
-Environment="PATH=/home/mastery/app/venv/bin"
-EnvironmentFile=/home/mastery/.env
-ExecStart=/home/mastery/app/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+User=pentangely
+Group=pentangely
+WorkingDirectory=/home/pentangely/mastery/src/
+Environment="PATH=/home/pentangely/mastery/venv/bin"
+EnvironmentFile=/home/pentangely/.env
+ExecStart=/home/pentangely/mastery/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
 
 [Install]
 WantedBy=multi-user.target
